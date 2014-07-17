@@ -1,0 +1,1311 @@
+/*  ==========================================
+    Table of Contents for Style guide
+    ==========================================
+
+    0.0  SASS Variables and Mixins
+    1.0  General app styles
+    2.0  Navigation
+    3.0  Welcome page
+    4.0  Footer styles
+    5.0  Sidebar styles
+    6.0  About page
+    7.0  Academy landing page
+
+    10.0  WordPress overrides
+
+============================================== */
+
+
+/*  ==========================================
+    0.0  Variables and Mixins
+    ========================================== */
+
+$color_primary_link: #126AFF;
+$color_contrast_link: #E34A26;
+$color_primary_copy: #333;
+
+$font_family_primary: "Proxima Nova", "Proxima-nova", "Helvetica Neue", "Helvetica", sans-serif;
+
+
+@mixin user-select($option: none) {
+  -webkit-user-select: $option;
+  -moz-user-select: $option;
+  -ms-user-select: $option;
+  -o-user-select: $option;
+  user-select: $option;
+}
+
+@mixin transition($type: all, $duration: .22s, $function: ease-in-out){
+  -webkit-transition: $type $duration $function;
+  -moz-transition: $type $duration $function;
+  -o-transition: $type $duration $function;
+  transition: $type $duration $function;
+}
+
+@mixin linear_gradient($first_color: rgba(0,0,0,0), $second_color:rgba(0,0,0,.25), $fallback_color: rgba(0,0,0,.3)){
+  background: -moz-linear-gradient(top,  $first_color 0%, $second_color 100%), $fallback_color; /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$first_color), color-stop(100%,$second_color)), $fallback_color; /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  $first_color 0%, $second_color 100%), $fallback_color; /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  $first_color 0%, $second_color 100%), $fallback_color; /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  $first_color 0%, $second_color 100%), $fallback_color; /* IE10+ */
+  background: linear-gradient(to bottom,  $first_color 0%, $second_color 100%), $fallback_color; /* W3C */
+}
+
+@mixin background-size-cover {
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -ms-background-size: cover;
+  background-size: cover;
+}
+
+// For retina assets.
+// Pulled from @Stammy: http://paulstamatiou.com/responsive-retina-blog-development-part-2
+@mixin retina {
+  @media only screen and (-webkit-min-device-pixel-ratio: 1.3), 
+  only screen and (-o-min-device-pixel-ratio: 13/10), 
+  only screen and (min-resolution: 120dpi) {
+    @content;
+  }
+}
+
+@mixin bg-size($width: auto, $height: 100%) {
+  -moz-background-size: $width $height;
+  -webkit-background-size: $width $height;
+  background-size: $width $height;
+}
+
+// Silly function to divide the width and height to save me 2 seconds
+// whenever I need to calculate the halved retina background position
+@function double-pos($w, $h) { @return $w*2 $h*2; }
+
+
+// For tabelts and mid-sized mobile devices. Typically 54em.
+@mixin mq-tablet {
+  @media (max-width: 54em) {
+    @content;
+  } 
+}
+
+// For smartphones and personal (small) mobile devices. Typically 30em. 
+@mixin mq-personal {
+  @media  (max-width: 30em) {
+    @content;
+  }
+}
+
+@mixin hoverSlide {
+  -webkit-transform: translateX(.5em);
+  -ms-transform: translateX(.5em);
+  transform: translateX(.5em);
+}
+
+
+/*  ==========================================
+    1.0  General app styles
+        (Includes things such as body, 
+        tables, lists, headers, etc.)
+    ========================================== */
+
+
+body {
+  font-family:$font_family_primary;
+  font-size: normal;
+  color: #333;
+  line-height: 1.42;
+  background-color:#fff;
+  margin-top: 5em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #333;
+  font-family: $font_family_primary;
+  font-weight: bold; 
+  -webkit-font-smoothing: subpixel-antialiased;
+  -webkit-text-size-adjust: 100%;
+  font-smoothing: subpixel-antialiased;
+}
+
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { font-weight: inherit; }
+
+h1 {
+  a { text-decoration:none; }
+  a:visited { color: $color_primary_link; }
+}
+
+h2 {
+  font-size: 2em;
+  font-weight: 300;
+  margin-top:0;
+  margin-bottom: 1em;
+
+  a { text-decoration:none; }
+  a:visited { color: $color_primary_link; }
+
+  @include mq-personal { font-size: 1.4em; }
+}
+
+h3 {
+  text-transform: uppercase;
+  font-size: .8em;
+  margin: 1em 0;
+  color: #aaa;
+  font-weight: 600;
+  border-bottom: 3px solid rgba(0,0,0,.1);
+}
+
+h4 {
+  margin-bottom: .5em;
+}
+
+
+p { margin: 0 0 1.5em 0; }
+p img { margin: 0; }
+
+em, i { font-style: italic; }
+strong, b { font-weight: bold; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  max-width: 100%;
+  background-color: transparent;
+}
+
+a{ color:$color_primary_link; outline: 0; }
+a:visited { color: #6A4C96; }
+a:hover, a:focus { text-decoration: underline; }
+p a, p a:visited { line-height: inherit; }
+
+ul li, ol li { margin-bottom: 1.5em; }
+
+.full-width { width:100%; }
+
+
+.button {
+  margin: 1.5em 0;
+  display: inline-block;
+  padding: .75em 1.5em;
+  background: $color_primary_link;
+  border:1px solid $color_primary_link;
+  color: #FFF;
+  text-decoration: none;
+  border-radius: 4px;
+  outline: none;
+
+  &:hover { text-decoration:underline; background-color: lighten($color_primary_link, 10%); }
+  &:active { background-color: darken($color_primary_link, 10%); }
+}
+
+.button:visited { color:white; }
+
+.button-success {
+  background-color:#73BF79;
+  border-color: #73BF79;
+
+  &:hover { background-color: lighten(#73BF79, 10%);}
+  &:active { background-color: darken(#73BF79, 10%);}
+}
+
+.button-subtle {
+  background-color:transparent;
+  border-color: $color_primary_link;
+  color:$color_primary_link;
+  border-radius:2em;
+  @include transition(background-color, .12s);
+
+  &:hover { text-decoration:none; background: $color_primary_link; color:white; @include transition(background-color, .2s); }
+  &:active { background-color: darken($color_primary_link, 10%); color:white; text-decoration:none; }
+}
+
+.button-disabled {
+  background-color:#BF7373;
+  border-color: #BF7373;
+  cursor: default; 
+  &:hover { background-color: #BF7373; text-decoration:none; }
+  &:active { background-color: #BF7373; }
+}
+
+.button-exciting {
+  background-color:#E34A26;
+  border-color: #E34A26;
+
+  &:hover { background-color: lighten(#E34A26, 10%);}
+  &:active { background-color: darken(#E34A26, 10%);}
+}
+
+.button-outline {
+
+}
+
+.read-more-link { display:inline; }
+.read-more-content { display:none; }
+
+.hide-text {
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.group {
+  *zoom: 1;
+  &:before,
+  &:after {
+    display: table;
+    content: "";
+    // Fixes Opera/contenteditable bug:
+    // http://nicolasgallagher.com/micro-clearfix-hack/#comment-36952
+    line-height: 0;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+.wrap {
+  width:96%;
+  max-width:1000px;
+  margin:0 auto;
+  position:relative;
+
+  @include mq-personal {
+    width:92%;
+  }
+}
+
+.mid-wrap { max-width: 588px; }
+
+
+:-moz-placeholder           { font-size:1em; font-weight:300; }
+::-moz-placeholder          { font-size:1em; font-weight:300; }
+:-ms-input-placeholder      { font-size:1em; font-weight:300; }
+::-webkit-input-placeholder { font-size:1em; font-weight:300; }
+
+.notice {
+  padding:1em;
+  border-radius:4px;
+  color:#333;
+  background-color:#FDFBEA;
+  border:1px solid darken(#FDFBEA, 10%);
+  margin-bottom:1.5em;
+}
+
+.notice-alert {
+  background-color:#FCCCC1;
+  border-color:darken(#FCCCC1,10%);
+}
+
+.notice-success {
+  background-color:#ECFDEA;
+  border-color:darken(#ECFDEA,10%);
+}
+
+h2.notice-success { text-align:center; }
+
+.label { margin-top:1.5em; }
+.label-detail {
+  display:block;
+  margin:0; 
+  font-size:.8em;
+  color:#777;
+}
+
+.page-title {
+  margin-top:0;
+}
+
+.archive-link, .archive-link:visited { color:#BF7373; }
+
+/*  ==========================================
+    2.0  Navigation
+    ========================================== */
+
+.menu {
+  float:right;
+  text-align: right;
+  position: relative;
+  margin:2em 2em 0;
+  padding:0;
+
+  ul {
+    margin: 0;
+    padding:0;
+    list-style: none;
+  }
+
+  li {
+    display: inline;
+    margin-left:1em;
+    margin-bottom: 0;
+    position: relative;
+    z-index:9;
+  }
+
+  li a { 
+    text-decoration:none; 
+    color: $color_primary_copy; 
+    z-index:10; 
+    position:relative; 
+    padding:.5em;
+  }
+
+  li a:hover { text-decoration:underline; color: $color_primary_link; }
+
+  // Start here link
+  .start-here a,
+  .menu-item-755 a {
+    color:$color_contrast_link;
+    border:1px solid $color_contrast_link;
+    border-radius:1em;
+    padding:.5em 1em;
+    @include transition(background-color, .15s);
+
+    &:hover {
+      background-color:$color_contrast_link;
+      color:white;
+      text-decoration: none;
+      @include transition(background-color, .15s);
+    }
+  }
+
+  @include mq-tablet {
+    display: none;
+  }
+}
+
+.menu .children, 
+.menu .sub-menu {
+  position:absolute;
+  top:1em;
+  left:0;
+  display: none;
+  background-color:rgba(255,255,255,.95);
+  padding:1em 0em .25em;
+  border-radius:4px;
+  width:10em;
+  text-align: left;
+  z-index:8;
+
+  li { 
+    display:block; 
+    padding:0;
+    margin-left:0; 
+    width:100%;
+  }
+
+  li a { 
+    color:$color_primary_link; 
+    display:block; 
+    padding:.25em 1em;
+  }
+
+  li a:hover {
+    color:white;
+    background-color: $color_primary_link;
+    text-decoration: none;
+  }
+}
+
+.menu li:hover .children,
+.menu li:hover .sub-menu { 
+  /* Show menu on hover */
+  display:block; 
+}
+
+.menu li:last-child:hover .sub-menu {
+  right: 0;
+  left: inherit;
+  text-align: right;
+}
+
+.icon {
+  display: block;
+  width:36px;
+  height:36px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size:36px 36px;
+}
+
+.icon-menu {
+  display: none;
+  position: relative;
+  top:1.5em;
+  right:1.5em;
+  float:right;
+  border:1px solid white;
+  border-radius:8px;
+  background-image: aws_image_url('icon-menu.png');
+  background-position:0 0;
+  @include transition(border);
+
+  &:hover { 
+    border-color:rgba(0,0,0,.1); 
+    @include transition(border, .15s);
+  }
+
+  @include mq-tablet {
+    display: block;
+  }
+
+  @include retina {
+    background-image: aws_image_url('icon-menu@2x.png');
+    @include bg-size(32px, 32px);
+  }
+}
+
+.opened .icon-menu, 
+.icon-menu:active {
+    display: block;
+    border-color:$color_primary_link; 
+    @include transition(border, .05s);
+}
+
+.opened .menu {
+  display: block;
+  position: absolute;
+  top: 5em;
+  right: 0;
+  margin: 0;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 1em 0;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  width:auto;
+
+  @include mq-personal {
+    width:100%;
+  }
+
+  li {
+    padding:0;
+    margin:0;
+    display: block;
+    text-align: left;
+  }
+
+  li a { 
+    display:block; 
+    width: 100%; 
+    margin: .25em 0;
+    padding:0 1em;
+  }
+
+  li a:hover {
+    color:white;
+    background-color: $color_primary_link;
+    text-decoration: none;
+  }
+
+  .start-here a,
+  .menu-item-755 a {
+    color:inherit;
+    border:none;
+    border-radius:0;
+  }
+
+  .sub-menu, .children {
+    display: block;
+    position:relative;
+    top:0;
+    padding:0;
+    background-color:transparent;
+    list-style: disc;
+
+    li { padding-left:.5em; }
+  }
+}
+
+
+
+
+/*  ==========================================
+    3.0  Welcome page
+    ========================================== */
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(255,255,255,.95);
+  z-index: 5;
+  @include transition;
+}
+
+.site-header.has-scrolled {
+  transform:translateY(-5em);
+  -ms-transform:translateY(-5em); /* IE 9 */
+  -webkit-transform:translateY(-5em); /* Safari and Chrome */
+  @include transition(all, .27s);
+}
+
+.site-title {
+  float:left;
+  margin:0;
+}
+
+.apk-logo {
+  display: block;
+  width:153px;
+  height:32px;
+  z-index:10;
+  margin:.75em 0;
+  background-repeat:no-repeat;
+  background-position:center center;
+  background-image: aws_image_url('apk-logo.png');  
+
+  @include retina {
+    background-image: aws_image_url('apk-logo@2x.png');
+    @include bg-size(153px, 32px);
+  }
+}
+
+.featured-image {
+  width: 100%;
+  height: 600px;
+  position: relative;
+  display: block;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  background-color:#efefef;
+  background-image:aws_image_url('bg-shattered.png');
+  margin-bottom: 4em;
+
+  @include retina { background-image: aws_image_url('bg-shattered@2x.png'); }
+  @include mq-tablet { height:500px; margin-bottom:2em; }
+  @include mq-personal { height:auto; margin-bottom:1em; }
+
+  .wrap { z-index:1; }
+}
+
+.featured-small {
+  height:360px;
+
+  @include mq-tablet { height:280px; }
+  @include mq-personal { height:200px; }
+}
+
+.featured-tiny {
+  height:180px;
+
+  @include mq-tablet { height:160px; }
+  @include mq-personal { height:120px; }
+}
+
+.featured-image-caption {
+  position:absolute;
+  bottom:0;
+  right:0;
+  text-align: right;
+  background-color:rgba(0,0,0,.55);
+  padding:.5em .75em;
+  border-top-left-radius:6px;
+  border-top-right-radius:6px;
+  color:white;
+  font-style: italic;
+  font-weight: 500;
+  font-size: .8em;
+  line-height: 1;
+
+  a { color:white; text-decoration:none; }
+  a:hover { text-decoration:underline; }
+}
+
+.featured-overlay {
+  display: block;
+  width:100%;
+  height:100%;
+  position:absolute;
+  z-index:0;
+}
+
+.main-content { position:relative; }
+.main-content h1 { 
+  font-weight: 300;
+  font-size: 3em;
+  margin-top:0;
+  margin-bottom: 1em;
+  line-height: 1.2;
+
+  @include mq-personal {
+    font-size: 1.8em;
+  }
+}
+
+.site-archive h1 {
+  font-size: 2em;
+  margin:1em 0 .5em;
+}
+
+.site-post h1 a,
+.site-archive h1 a {
+  text-decoration: none;
+  &:hover { text-decoration:underline; }
+}
+
+.site-page h3,
+.site-post h3  {
+  font-size: 1.4em;
+  font-weight: normal;
+  margin-top:2em;
+  text-transform: none;
+  color:#888;
+  border-bottom:2px solid #ccc;
+}
+
+.site-page p,
+.site-post p {
+  font-size: 1em;
+  line-height: 1.42;
+}
+
+.site-post img,
+.site-interview img {
+  width:100%;
+  height:auto;
+  margin:1.5em auto;
+}
+
+.site-main {
+  padding-right: 380px;
+  max-width: 640px;
+
+  @include mq-tablet {
+    padding-right:0;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.home .site-main > h3 {
+  margin-top:0;
+}
+
+.site-interview {
+  margin-left: auto;
+  margin-right: auto;
+  padding:0;
+
+  h2, p { padding:0 4%; }
+}
+
+.photo-caption {
+  text-align: right;
+  margin-top:-1.5em;
+  margin-bottom:3em;
+  font-style: italic;
+  color:#999;
+  font-size: .8em;
+}
+
+
+.featured-home {
+  background-image: aws_image_url('featured-image-home-01.jpg');
+}
+
+.featured-home-title {
+  position:relative;
+  top:3em;
+  line-height: 1;
+  font-size: 3.4em;
+  font-weight:300;
+  color:white;
+  
+
+  b { font-weight:600; }
+
+  @include mq-tablet {
+    font-size: 2.6em;
+  }
+
+  @include mq-personal {
+    text-align: center;
+    font-size:2em;
+    top:0;
+    margin:2em auto;
+  }
+}
+
+.page-template-page-interview-php .featured-home-title {
+  text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.4), 4px 4px 0 rgba(0, 0, 0, 0.4);
+  text-transform: uppercase;
+  font-size: 5em;
+  font-weight: 600;
+
+  @include mq-tablet {
+    font-size: 2.6em;
+  }
+
+  @include mq-personal {
+    text-align: center;
+    font-size:2em;
+  }
+}
+
+.store-sale {
+  background-color: rgba(0, 204, 88, 0.9);
+  color: #FFF;
+  width: 100%;
+  font-size: 1.2em;
+  padding:2em 0;
+  position: absolute;
+  bottom:0;
+
+  @include mq-tablet {
+    padding:1em 0;
+    bottom:0;
+  }
+
+  @include mq-personal {
+    position:relative;
+    font-size:1em;
+    margin:0;
+  }
+
+  p {
+    float:left;
+    width:620px;
+    margin-bottom: 0;
+    margin-right: 3em;
+    text-align: right;
+
+    @include mq-tablet {
+      float:none;
+      display: block;
+      width:80%;
+      margin:0 auto 1em;
+      text-align: center;
+    }
+
+    @include mq-personal {
+      width:92%;
+      font-size: .9em;
+    }
+  }
+
+  .coupon-code { color: #004A20; }
+
+  .button {
+    float:left;
+    display: block;
+    margin:0;
+    border-color:white;
+    color:white;
+    position: relative;
+    top:-.25em;
+    background-color:rgba(0, 204, 88, 1.0);
+
+    &:hover {
+      background-color:$color_primary_link;      
+    }
+
+    @include mq-tablet {
+      float:none;
+      margin:1em auto 0;
+      text-align: center;
+      display: block;
+      width:6em;
+      top:inherit;
+      padding: .5em 1em;
+    }
+  }
+}
+
+.post-summary-list {
+  margin:0;
+  padding:0;
+}
+
+.home-news-item {
+  list-style: none;
+  padding:0;
+  margin:.5em 0 0;
+  @include transition;
+
+  &:hover {
+    @include hoverSlide;
+    @include transition;
+  }
+}
+
+.home-news-link {
+  text-decoration: none;
+  color:#555;
+  display: block;
+  background:transparent;
+  padding:.5em 2%;
+  border-radius:8px;
+  @include transition(background, .15s);
+  
+  &:hover { 
+    background-color:#fafafa;
+    text-decoration:none; 
+    @include transition(background, .15s);
+  }
+
+  &:visited { color:inherit; }
+}
+
+
+
+.post-title { 
+  line-height:1.2;
+  margin-top:0; 
+  margin-bottom: .5em;
+  color: $color_primary_link; 
+
+  a { text-decoration:none; }
+}
+
+.post-date {
+  color:#ccc;
+  text-transform: uppercase;
+  font-size: .8em;
+  margin-top:1em;
+  margin-bottom: .5em;
+}
+
+.post-summary p:last-child { margin-bottom:.5em; }
+.post-summary { margin-bottom:1.5em; }
+
+.entry-title a { text-decoration:none; }
+.entry-title a:visited { color:$color_primary_link; text-decoration:none; }
+
+.author-info {
+  margin-top:2em;
+  border-top:4px solid #efefef;
+  padding-top:1.5em;
+  position: relative;
+
+  .author-details {
+    padding-left: 6em;
+  }
+
+  .author-avatar {
+    position:absolute;
+    top:1.5em;
+    left:0;
+    width:72px;
+    height:72px;
+    display:block;
+    margin:0 1.5em 0 0;
+    border-radius:50%;
+    background-color:#efefef;
+  }
+
+  .author-written-by {
+    font-size: .8em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color:#ccc;
+    margin:0;
+  }
+
+  .author-name {
+    color:$color_primary_copy;
+    font-weight: normal;
+    font-size: 1.2em;
+    margin:0;
+  }
+
+  .author-bio {
+    color:#666;
+    font-size: 1em;
+  }
+}
+
+
+/*  ==========================================
+    4.0  Footer styles
+    ========================================== */
+
+
+.footer {  
+  margin-top: 6em;
+  display: block;
+  position: relative;
+
+  width:100%;
+  text-align: center;
+  background-color: #1C1F29;
+  color: #FFF;
+
+  background-image: url(http://americanparkour.s3.amazonaws.com/assets/store/footer-bg.png);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+
+  h2 {
+    color:white;
+    padding-top:4em;
+    width:530px;
+    margin:0 auto 1em;
+    @include mq-tablet { width:430px; font-size:1.8em; }
+    @include mq-personal { width:92%; font-size:1.4em; }
+  }
+  .button { margin-bottom:8em; }
+
+}
+
+.footer-color-overlay {
+  display: block;
+  width:100%;
+  height:100%;
+  background-color:rgba(10,12,22,.4);
+  @include transition;
+
+  &:hover {
+    background-color:rgba(30,32,42,.95);
+  }
+}
+
+/*  ==========================================
+    5.0  Sidebar styles
+    ========================================== */
+
+.widget-area {
+  width:310px;
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  @include mq-tablet {
+    float:none;
+    position:relative;
+    top:1.5em;
+    width:100%;
+  }
+
+  @include mq-personal {
+    width:100%;
+    max-width:310px;
+    margin:2em auto;
+  }
+}
+
+.widget {
+  margin-bottom: 2em;
+
+  p { color:#666; }
+  img { max-width:100%; }
+  ul li { margin-bottom:0; }
+
+  @include mq-tablet {
+    width:48%;
+    margin:1em 2% 1em 0;
+    float:left;
+  }
+
+  @include mq-personal {
+    width:100%;
+    margin: 2em auto;
+  }
+}
+
+.widget-title {
+  margin: 0 0 1em;
+}
+
+.email-input {
+  display:block;
+  width:92%;
+  padding:.75em 4%;
+  border:1px solid rgba(0,0,0,.2);
+  border-radius:4px;
+  margin-bottom: .5em;
+}
+
+.email-submit {
+  display:block;
+  text-align: left;
+  margin:.5em 0;
+}
+
+.social-list {
+  list-style:none;
+  margin:0;
+  padding:0;
+
+  li { margin-bottom:0; }
+}
+
+.social-network {
+  display:block;
+}
+
+.social-network-link {
+  display:block;
+  position:relative;
+  width:100%;
+  height:auto;
+  border-radius:4px;
+  padding:.75em .5em;
+  text-decoration: none;
+  vertical-align: top;
+  line-height: 1;
+  @include transition(background-color, .15s);
+
+  &:visited { color: $color_primary_link; }
+  &:hover { background-color: $color_primary_link; color:white; text-decoration: none; }
+
+}
+
+.social-icon {
+  display:block;
+  width:32px;
+  height:32px;
+  background-color:transparent;
+  border-radius:50%;
+  margin:0 .5em 0 0;
+  float:left;
+  background-position:0 0;
+  background-repeat:no-repeat;
+}
+
+.social-network-link:hover .social-icon { background-position:-33px 0px; }
+
+.social-text {
+  position:relative;
+  top:.5em;
+}
+
+.social-icon-facebook { background-image:aws_image_url('social-icon-facebook.png'); }
+.social-icon-instagram { background-image:aws_image_url('social-icon-instagram.png'); }
+.social-icon-youtube { background-image:aws_image_url('social-icon-youtube.png'); }
+.social-icon-twitter { background-image:aws_image_url('social-icon-twitter.png'); }
+
+
+
+/*  ==========================================
+    6.0  Academy landing page
+    ========================================== */
+
+.academy-list {
+  margin:0;
+  padding:0;
+
+  li { list-style:none; }
+  li:first-child { margin-top:2em; } 
+}
+
+.academy-gym-item {
+  display:block;
+
+  a {
+    display:block;
+    text-decoration: none;
+    padding:.5em 2%;
+    border-radius:8px;
+    @include transition;
+  }
+
+  a:hover { 
+    text-decoration:none; 
+    background-color:#efefef;
+    @include transition;
+    @include hoverSlide;
+  }
+
+  .academy-title {
+    font-size:1.3em;
+    color:$color_primary_link;
+    margin:0;
+    text-decoration: none;
+    border:none;
+  }
+}
+
+.academy-image {
+  width:72px;
+  height:72px;
+  float:left;
+  margin-right:1.5em;
+  border-radius:50%;
+  background-color:#eee;
+}
+
+.academy-address {
+  color:#636363;
+  line-height: 1;
+  margin-bottom: 0;
+}
+
+.academy-cert-grad {
+  padding: 1em 4% 0; 
+  background-color: #ffffec; 
+  margin: 1.5em auto; 
+  border-radius: 8px;
+}
+
+.sidenote {
+  font-style: italic; 
+  color: #666;
+}
+
+
+
+/*  ==========================================
+    6.0  About page
+    ========================================== */
+
+.page-about {
+  font-size:1.4em;
+  line-height: 1.4;
+  font-weight: 500;
+  color:#333;
+}
+
+.inner-header {
+  margin-top:4em;
+}
+
+
+
+.about-wrap {
+  margin:4em auto;
+  color:#666;
+}
+
+.about-intro {
+  font-size: 1.5em;
+  font-weight: 300;
+  color: #333;
+  text-align: center;
+}
+
+.core-beliefs {
+  background-color:#D8D8D8;
+  padding:4em 0;
+  text-align: center;
+
+  ol {
+    counter-reset:li; /* Initiate a counter */
+    margin-left:0; /* Remove the default left margin */
+    padding-left:0; /* Remove the default left padding */
+  }
+
+  ol li { 
+    position:relative; 
+    display:block; 
+    margin-bottom: 8em;
+    list-style:none; 
+    z-index:1; 
+  }
+
+  ol > li:before {
+    content:counter(li); /* Use the counter as content */
+    counter-increment:li; /* Increment the counter by 1 */
+    /* Position and style the number */
+    position:absolute;
+    top:-.6em;
+    left:0;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    box-sizing:border-box;
+    color:#fff;
+    font-weight:bold;
+    text-align:center;
+    display: block;
+    width:100%;
+    font-size: 6em;
+    z-index: 0;
+    opacity: .8;
+  }
+
+  ol > li:last-child {
+    margin-bottom: 0;
+  }
+
+  h3 {
+    position: relative;
+    font-size: 1.3em;
+    color:#393939;
+    font-weight: 600;
+    text-transform: none;
+    border-bottom:none;
+  }
+}
+
+.about-subhead {
+  color:#898989;
+  font-size: 1.6em;
+  margin: 3em auto 1.5em;
+  text-align: center;
+}
+
+.subhead-belief {
+  margin-bottom: 5em;
+}
+
+.about-footer {
+  background-image: url(http://americanparkour.s3.amazonaws.com/assets/community/footer-bg-about.jpg);
+}
+
+
+/*  ==========================================
+    9.0  404 / 500 pages
+    ========================================== */
+
+.error-404-page {
+  display: block;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgb(0, 0, 0) no-repeat center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-image:aws_image_url('404.jpg');
+  padding-top:5em;
+}
+
+.error-404-content {
+  color:white; 
+  margin-top:5em;
+  text-align: right;
+  background-color:rgba(0,0,0,.43);
+  width:48%; 
+  float:right;
+  padding:1em 4%;
+  border-radius:3px;
+  @include transition;
+
+  h1 { color:white; margin-bottom:.25em !important; font-weight:bold !important; }
+  h2 { color:white; margin-bottom:1em; }
+  p  { font-size:1.5em; font-weight:100; }
+  a  { color:inherit; font-weight:500; text-decoration:none; border-bottom:2px solid white;  }
+  a:hover { color:$color_primary_link; border-color: $color_primary_link; }
+
+  @include mq-tablet {
+    width:70%;
+    float:none;
+    margin: 5em auto;
+    background-color:rgba(0,0,0,.53);
+    @include transition;
+
+  }
+
+  @include mq-personal {
+    width:92%;
+    text-align: center;
+    @include transition;
+
+    h1 { font-size:2em; }
+    h2 { font-size:1.4em; }
+    p  { font-size:1em; }
+  }
+}
+
+
+
+/*  ==========================================
+    10.0  WordPress overrides
+    ========================================== */
+
+#wpadminbar { visibility:hidden; }
+
